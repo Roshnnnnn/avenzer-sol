@@ -4,19 +4,22 @@ import CountryDropdown from "./CountryDropdown";
 
 const HomePage = () => {
   return (
-    <>
-      <div className="min-h-screen flex items-center justify-center relative">
-        <Link to={"/signup"} className="absolute top-0 left-0 m-4">
-          signup
+    <div className="min-h-screen flex items-center justify-center ">
+      <div className="absolute top-0 left-0 m-4">
+        <Link
+          to="/signup"
+          className="text-blue-600 hover:text-blue-800 font-semibold"
+        >
+          Sign Up
         </Link>
-        <div className="absolute top-0 right-0 m-4">
-          <CountryDropdown />
-        </div>
-        <div className="w-full max-w-lg p-6 rounded-lg shadow-md">
-          <Todo />
-        </div>
       </div>
-    </>
+      <div className="absolute top-0 right-0 m-4">
+        <CountryDropdown />
+      </div>
+      <div className="w-full max-w-lg p-8 bg-pink-300 rounded-lg shadow-lg">
+        <Todo />
+      </div>
+    </div>
   );
 };
 
