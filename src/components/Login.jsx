@@ -4,24 +4,50 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = { email: "", password: "" };
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Please enter a valid email address.";
+      valid = false;
+    }
+
+    if (!/.{6,}/.test(password)) {
+      newErrors.password = "Password must be at least 6 characters long.";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const storedUserData = localStorage.getItem("signupData");
 
-    if (storedUserData) {
-      const { email: storedEmail, password: storedPassword } =
-        JSON.parse(storedUserData);
+    if (validateForm()) {
+      const storedUserData = localStorage.getItem("signupData");
 
-      if (email === storedEmail && password === storedPassword) {
-        alert("Login successful!");
-        navigate("/");
+      if (storedUserData) {
+        const { email: storedEmail, password: storedPassword } =
+          JSON.parse(storedUserData);
+
+        if (email === storedEmail && password === storedPassword) {
+          alert("Login successful!");
+          navigate("/");
+        } else {
+          alert("Invalid email or password.");
+        }
       } else {
-        alert("Invalid email or password.");
+        alert("No user found. Please sign up first.");
       }
-    } else {
-      alert("No user found. Please sign up first.");
     }
   };
 
@@ -38,7 +64,9 @@ const Login = () => {
               Email
             </label>
             <input
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 ${
+                errors.email ? "border-red-500" : ""
+              }`}
               type="email"
               id="email"
               name="email"
@@ -46,6 +74,9 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
           <div className="mb-6">
             <label
@@ -55,7 +86,9 @@ const Login = () => {
               Password
             </label>
             <input
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-200 ${
+                errors.password ? "border-red-500" : ""
+              }`}
               type="password"
               id="password"
               name="password"
@@ -63,6 +96,9 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
           <button
             type="submit"
