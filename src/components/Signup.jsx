@@ -72,7 +72,7 @@ const Signup = () => {
       alert("Signup successful!");
       navigate("/login");
     } else {
-      alert("Please correct the errors in the form.");
+      alert("Please correct the errors in the form");
     }
   };
 
